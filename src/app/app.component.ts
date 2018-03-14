@@ -20,6 +20,11 @@ export class AppComponent implements OnInit {
        * this tells amCharts it's a map
        */
       type: 'map',
+      fontSize: 15,
+      color: '#FFFFFF',
+      projection: 'mercator',
+      backgroundAlpha: 1,
+      backgroundColor: 'rgba(80,80,80,1)',
 
       /**
        * create data provider object
@@ -40,14 +45,16 @@ export class AppComponent implements OnInit {
        * selectedColor indicates color of the clicked area.
        */
       areasSettings: {
-        autoZoom: true,
+        color: 'rgba(129,129,129,1)',
+        outlineColor: 'rgba(80,80,80,1)',
+        rollOverOutlineColor: 'rgba(80,80,80,1)',
+        rollOverBrightness: 20,
+        selectedBrightness: 20,
+        autoZoom: false,
         selectedColor: '#CC0000'
-      },
+      }
 
-      /**
-       * let's say we want a small map to be displayed, so let's create it
-       */
-      smallMap: {}
+
     });
   }
 }
