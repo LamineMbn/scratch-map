@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { AmChartsService } from '@amcharts/amcharts3-angular';
+import {Component, OnInit} from '@angular/core';
+import {AmChart, AmChartsService} from '@amcharts/amcharts3-angular';
+
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +10,9 @@ import { AmChartsService } from '@amcharts/amcharts3-angular';
 })
 export class AppComponent implements OnInit {
   title = 'app';
+  selectedCountries = new Array<string>();
+  map: AmChart;
+  that = this;
 
 
   constructor(readonly _amCharts: AmChartsService) {
@@ -15,16 +20,18 @@ export class AppComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this._amCharts.makeChart('mapdiv', {
+    let that = this;
+    this.map = this._amCharts.makeChart('mapdiv', {
       /**
        * this tells amCharts it's a map
        */
       type: 'map',
+      theme: 'light',
       fontSize: 15,
       color: '#FFFFFF',
-      projection: 'mercator',
-      backgroundAlpha: 1,
-      backgroundColor: 'rgba(80,80,80,1)',
+      projection: 'miller',
+      /*backgroundAlpha: 1,
+      backgroundColor: 'rgba(80,80,80,1)',*/
 
       /**
        * create data provider object
@@ -45,16 +52,47 @@ export class AppComponent implements OnInit {
        * selectedColor indicates color of the clicked area.
        */
       areasSettings: {
-        color: 'rgba(129,129,129,1)',
+        /*color: 'rgba(129,129,129,1)',
         outlineColor: 'rgba(80,80,80,1)',
-        rollOverOutlineColor: 'rgba(80,80,80,1)',
-        rollOverBrightness: 20,
-        selectedBrightness: 20,
+        rollOverOutlineColor: 'rgba(80,80,80,1)',*/
+        selectable: true,
         autoZoom: false,
-        selectedColor: '#CC0000'
-      }
+        selectedColor: '#CC0000',
+        // rollOverBrightness: 20,
+        // selectedBrightness: 20
+      },
+
+      listeners: [{
+        event: 'clickMapObject',
+        method: function (event) {
+          that.fireCountrySelectionEvent(event);
+        }
+      }]
 
 
     });
+
   }
+
+  fireCountrySelectionEvent(event) {
+    console.log(`Event is ${event}`);
+    let area = event.mapObject;
+    console.log(`Area is ${area}`);
+    area.showAsSelected = !area.showAsSelected;
+    event.chart.returnInitialColor(area);
+    this.updateCountryList();
+  }
+
+  updateCountryList(): void {
+    var selected = [];
+    _.forEach(this.map.dataProvider.areas, function (area) {
+      if (area.showAsSelected) {
+        selected.push(area.id);
+      }
+    })
+    console.log(`selected is ${selected}`);
+    this.selectedCountries = selected;
+    console.log(`selectedCountries is ${this.selectedCountries}`);
+  }
+
 }
