@@ -1,7 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {AmChart, AmChartsService} from '@amcharts/amcharts3-angular';
 
 import * as _ from 'lodash';
+import * as countries from 'country-list';
+
+// var countries = require('country-list')();
 
 @Component({
   selector: 'app-root',
@@ -11,17 +14,18 @@ import * as _ from 'lodash';
 export class AppComponent implements OnInit {
   title = 'app';
   selectedCountries = new Array<string>();
+  @Output() lastPrice = new EventEmitter();
   map: AmChart;
   that = this;
 
 
-  constructor(readonly _amCharts: AmChartsService) {
+  constructor(private _amChartsService: AmChartsService) {
   }
 
 
   ngOnInit(): void {
-    let that = this;
-    this.map = this._amCharts.makeChart('mapdiv', {
+    console.log(countries.getNames()[2]);
+    this.map = this._amChartsService.makeChart('mapdiv', {
       /**
        * this tells amCharts it's a map
        */
@@ -61,38 +65,32 @@ export class AppComponent implements OnInit {
         // rollOverBrightness: 20,
         // selectedBrightness: 20
       },
+    });
 
-      listeners: [{
-        event: 'clickMapObject',
-        method: function (event) {
-          that.fireCountrySelectionEvent(event);
-        }
-      }]
-
-
+    this._amChartsService.addListener(this.map, "clickMapObject", (event) => {
+      this.fireCountrySelectionEvent(event);
     });
 
   }
 
-  fireCountrySelectionEvent(event) {
-    console.log(`Event is ${event}`);
+  private fireCountrySelectionEvent(event) {
     let area = event.mapObject;
-    console.log(`Area is ${area}`);
     area.showAsSelected = !area.showAsSelected;
     event.chart.returnInitialColor(area);
     this.updateCountryList();
   }
 
-  updateCountryList(): void {
-    var selected = [];
-    _.forEach(this.map.dataProvider.areas, function (area) {
-      if (area.showAsSelected) {
-        selected.push(area.id);
-      }
-    })
-    console.log(`selected is ${selected}`);
-    this.selectedCountries = selected;
-    console.log(`selectedCountries is ${this.selectedCountries}`);
+  private updateCountryList(): void {
+    this.selectedCountries = this.retrieveSelectedCountries(this.map);
   }
 
+  private retrieveSelectedCountries(map: AmChart) : Array<string> {
+    var selected = [];
+    _.forEach(map.dataProvider.areas, function (area) {
+      if (area.showAsSelected) {
+        selected.push(`${area.id} (${area.title})`);
+      }
+    })
+    return selected;
+  }
 }
