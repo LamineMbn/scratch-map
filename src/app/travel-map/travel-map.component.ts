@@ -1,12 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AmChart, AmChartsService } from '@amcharts/amcharts3-angular';
-import { MatSelectChange } from '@angular/material';
-
-import * as _ from 'lodash';
-import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { map, startWith } from 'rxjs/operators';
-import { CountriesApiService } from '../service/countries-api.service';
+import { MapManipulationService } from '../shared/service/map-manipulation.service';
 
 @Component({
   selector: 'app-travel-map',
@@ -14,39 +8,25 @@ import { CountriesApiService } from '../service/countries-api.service';
   styleUrls: ['./travel-map.component.scss']
 })
 export class TravelMapComponent implements OnInit {
-  countryCtrl: FormControl;
-  filteredCountries: Observable<any[]>;
-  countries = [];
-  projections = [
-    {value: 'miller', viewValue: 'miller'},
-    {value: 'eckert5', viewValue: 'Eckert 5'},
-    {value: 'eckert6', viewValue: 'Eckert 6'}
-  ];
-
-
   selectedCountries = new Array<string>('DZ', 'CN');
   map: AmChart;
 
-  constructor(private _countriesApiService: CountriesApiService,
-              private _amChartsService: AmChartsService) {
+  constructor(readonly _amChartsService: AmChartsService,
+              readonly _mapService: MapManipulationService) {
   }
 
   ngOnInit(): void {
-
-    this.countryCtrl = new FormControl();
-    this._countriesApiService.getCountriesByFields(['name', 'nativeName', 'alpha2Code', 'flag']).subscribe(countries => {
-      this.countries = countries;
-    });
-
-    this.filteredCountries = this.countryCtrl.valueChanges
-      .pipe(
-        startWith(''),
-        map(state => state ? this.filterCountries(state) : this.countries.slice())
-      );
-
     this.map = this.createMap('mapdiv');
     this.addListeners();
 
+  }
+
+  updateProjection(projectionSelected) {
+    this.map.setProjection(projectionSelected);
+  }
+
+  async updateCountrySelection(countrySelected) {
+    this.selectedCountries = countrySelected;
   }
 
   private createMap(placeHolder: string): AmChart {
@@ -104,27 +84,6 @@ export class TravelMapComponent implements OnInit {
     });
   }
 
-  changeProjection(event: MatSelectChange){
-    let projection = event.value;
-    this.map.setProjection(projection);
-  }
-
-  async selectC(countrySelected){
-    this.selectedCountries = countrySelected;
-  }
-
-  private selectCountries(list: string[]) {
-    console.log(list)
-    let map = this.map;
-    _.forEach(list, function (countryCode) {
-      let area = map.getObjectById(countryCode);
-      area.showAsSelected = true;
-      map.returnInitialColor(area);
-    })
-    this.countryCtrl.reset();
-    this.selectedCountries = this.retrieveSelectedCountries(map);
-  }
-
   private fireCountrySelectionEvent(event) {
     let area = event.mapObject;
     area.showAsSelected = !area.showAsSelected;
@@ -136,19 +95,13 @@ export class TravelMapComponent implements OnInit {
     this.selectedCountries = this.retrieveSelectedCountries(this.map);
   }
 
-  private retrieveSelectedCountries(map: AmChart): Array<string> {
-    var selected = [];
-    _.forEach(map.dataProvider.areas, function (area) {
-      if (area.showAsSelected) {
-        selected.push(`${area.id} (${area.title})`);
-      }
-    })
-    return selected;
+  private selectCountries(list: string[]) {
+    let map = this._mapService.updateMapWithCountrySelection(this.map, list);
+    this.selectedCountries = this.retrieveSelectedCountries(map);
   }
 
-  private filterCountries(name: string) {
-    return this.countries.filter(country =>
-      country.name.toLowerCase().indexOf(name.toLowerCase()) === 0);
+  private retrieveSelectedCountries(map: AmChart): Array<string> {
+    return this._mapService.retrieveSelectedCountries(map);
   }
 
 }

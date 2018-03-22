@@ -1,9 +1,10 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import {CountriesApiService} from '../service/countries-api.service';
-import {AmChart} from '@amcharts/amcharts3-angular';
-
-import * as _ from 'lodash';
+import { map, startWith } from 'rxjs/operators';
+import { CountriesApiService } from '../shared/service/countries-api.service';
+import { AmChart } from '@amcharts/amcharts3-angular';
+import { FormControl } from '@angular/forms';
+import { MapManipulationService } from '../shared/service/map-manipulation.service';
 
 @Component({
   selector: 'app-country-select',
@@ -13,39 +14,46 @@ import * as _ from 'lodash';
 export class CountrySelectComponent implements OnInit {
 
   @Input() map: AmChart;
-  @Output() selectedCountries: EventEmitter<any[]>;
+  @Output() selectedCountries: EventEmitter<string[]>;
 
+  countryCtrl: FormControl;
   filteredCountries: Observable<any[]>;
   countries = [];
 
-  constructor(private _countriesApiService: CountriesApiService) { }
+  constructor(readonly _countriesApiService: CountriesApiService,
+              readonly _mapService: MapManipulationService) {
+    this.selectedCountries = new EventEmitter<string[]>();
+  }
 
   ngOnInit() {
+
+    this.countryCtrl = new FormControl();
 
     this._countriesApiService.getCountriesByFields(['name', 'nativeName', 'alpha2Code', 'flag']).subscribe(countries => {
       this.countries = countries;
     });
+
+    this.filteredCountries = this.countryCtrl.valueChanges
+      .pipe(
+        startWith(''),
+        map(state => state ? this.filterCountries(state) : this.countries.slice())
+      );
   }
 
-  private selectCountries(list: string[]) {
-    console.log(list)
-    let map = this.map;
-    _.forEach(list, function (countryCode) {
-      let area = map.getObjectById(countryCode);
-      area.showAsSelected = true;
-      map.returnInitialColor(area);
-    })
+  selectCountries(list: string[]) {
+    let map = this._mapService.updateMapWithCountrySelection(this.map, list);
+    this.countryCtrl.reset();
     this.selectedCountries.emit(this.retrieveSelectedCountries(map));
   }
 
-  private retrieveSelectedCountries(map: AmChart): Array<string> {
-    let selected = [];
-    _.forEach(map.dataProvider.areas, function (area) {
-      if (area.showAsSelected) {
-        selected.push(`${area.id} (${area.title})`);
-      }
-    })
-    return selected;
+  retrieveSelectedCountries(map: AmChart): Array<string> {
+    return this._mapService.retrieveSelectedCountries(map);
   }
+
+  filterCountries(name: string) {
+    return this.countries.filter(country =>
+      country.name.toLowerCase().indexOf(name.toLowerCase()) === 0);
+  }
+
 
 }

@@ -8,14 +8,17 @@ import { AngularMaterialModule } from './angular-material/angular-material.modul
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { CountriesApiService } from './service/countries-api.service';
+import { CountriesApiService } from './shared/service/countries-api.service';
 import { CountrySelectComponent } from './country-select/country-select.component';
+import { MapManipulationService } from './shared/service/map-manipulation.service';
+import { ProjectionSelectComponent } from './projection-select/projection-select.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TravelMapComponent,
-    CountrySelectComponent
+    CountrySelectComponent,
+    ProjectionSelectComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +29,7 @@ import { CountrySelectComponent } from './country-select/country-select.componen
     ReactiveFormsModule,
     AmChartsModule
   ],
-  providers: [CountriesApiService],
+  providers: [CountriesApiService, MapManipulationService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
