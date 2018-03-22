@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AmChart, AmChartsService } from '@amcharts/amcharts3-angular';
+import { MatSelectChange } from '@angular/material';
 
 import * as _ from 'lodash';
 import { FormControl } from '@angular/forms';
@@ -16,7 +17,12 @@ export class TravelMapComponent implements OnInit {
   countryCtrl: FormControl;
   filteredCountries: Observable<any[]>;
   countries = [];
-  selectedValue: string;
+  projections = [
+    {value: 'miller', viewValue: 'miller'},
+    {value: 'eckert5', viewValue: 'Eckert 5'},
+    {value: 'eckert6', viewValue: 'Eckert 6'}
+  ];
+
 
   selectedCountries = new Array<string>('DZ', 'CN');
   map: AmChart;
@@ -52,7 +58,7 @@ export class TravelMapComponent implements OnInit {
       theme: 'light',
       fontSize: 15,
       color: '#FFFFFF',
-      projection: 'eckert5',
+      projection: 'miller',
       /*backgroundAlpha: 1,
       backgroundColor: 'rgba(80,80,80,1)',*/
 
@@ -96,6 +102,15 @@ export class TravelMapComponent implements OnInit {
     this._amChartsService.addListener(this.map, 'clickMapObject', (event) => {
       this.fireCountrySelectionEvent(event);
     });
+  }
+
+  changeProjection(event: MatSelectChange){
+    let projection = event.value;
+    this.map.setProjection(projection);
+  }
+
+  async selectC(countrySelected){
+    this.selectedCountries = countrySelected;
   }
 
   private selectCountries(list: string[]) {

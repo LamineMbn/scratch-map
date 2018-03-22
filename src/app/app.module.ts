@@ -9,11 +9,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { CountriesApiService } from './service/countries-api.service';
+import { CountrySelectComponent } from './country-select/country-select.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TravelMapComponent
+    TravelMapComponent,
+    CountrySelectComponent
   ],
   imports: [
     BrowserModule,

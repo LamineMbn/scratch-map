@@ -1,0 +1,13 @@
+<form class="example-form">
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Country" aria-label="Country" [matAutocomplete]="auto" [formControl]="countryCtrl">
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+      <mat-option (onSelectionChange)="selectCountries([country.alpha2Code])"
+                  *ngFor="let country of filteredCountries | async"
+                  [value]="country.name">
+        <img style="vertical-align:middle;" aria-hidden src="{{country.flag}}" height="25"/>
+        <span>{{ country.name }}( {{country.alpha2Code}} )</span>
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
