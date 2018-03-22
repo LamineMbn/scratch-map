@@ -1,0 +1,7 @@
+<mat-form-field>
+  <mat-select placeholder="Map projection" (selectionChange)="changeProjection($event)">
+    <mat-option *ngFor="let projection of projections" [value]="projection.value">
+      {{ projection.viewValue }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
