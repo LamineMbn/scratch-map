@@ -12,13 +12,15 @@ import { CountriesApiService } from './shared/service/countries-api.service';
 import { CountrySelectComponent } from './country-select/country-select.component';
 import { MapManipulationService } from './shared/service/map-manipulation.service';
 import { ProjectionSelectComponent } from './projection-select/projection-select.component';
+import { WorldProgressionComponent } from './world-progression/world-progression.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TravelMapComponent,
     CountrySelectComponent,
-    ProjectionSelectComponent
+    ProjectionSelectComponent,
+    WorldProgressionComponent
   ],
   imports: [
     BrowserModule,

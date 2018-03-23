@@ -2,5 +2,6 @@
   <app-country-select [map]="map" (selectedCountries)="updateCountrySelection($event)"></app-country-select>
   <app-projection-select (projection)="updateProjection($event)"></app-projection-select>
 </section>
+<app-world-progression [(numberCountryVisited)]="selectedCountries.length"></app-world-progression>
 
 <div id="mapdiv" style="width: 100%; height: 600px;"></div>

@@ -5,6 +5,7 @@ import { CountriesApiService } from '../shared/service/countries-api.service';
 import { AmChart } from '@amcharts/amcharts3-angular';
 import { FormControl } from '@angular/forms';
 import { MapManipulationService } from '../shared/service/map-manipulation.service';
+import {Country} from '../shared/model/ICountry';
 
 @Component({
   selector: 'app-country-select',
@@ -18,7 +19,7 @@ export class CountrySelectComponent implements OnInit {
 
   countryCtrl: FormControl;
   filteredCountries: Observable<any[]>;
-  countries = [];
+  countries = new Array<Country>();
 
   constructor(readonly _countriesApiService: CountriesApiService,
               readonly _mapService: MapManipulationService) {
@@ -41,13 +42,13 @@ export class CountrySelectComponent implements OnInit {
   }
 
   selectCountries(list: string[]) {
-    let map = this._mapService.updateMapWithCountrySelection(this.map, list);
+    const iMap = this._mapService.updateMapWithCountrySelection(this.map, list);
     this.countryCtrl.reset();
-    this.selectedCountries.emit(this.retrieveSelectedCountries(map));
+    this.selectedCountries.emit(this.retrieveSelectedCountries(iMap));
   }
 
-  retrieveSelectedCountries(map: AmChart): Array<string> {
-    return this._mapService.retrieveSelectedCountries(map);
+  retrieveSelectedCountries(pMap: AmChart): Array<string> {
+    return this._mapService.retrieveSelectedCountries(pMap);
   }
 
   filterCountries(name: string) {

@@ -1,9 +1,17 @@
-.example-form {
-  min-width: 150px;
-  max-width: 500px;
+section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: stretch;
   width: 100%;
+  height: 100%;
 }
 
-.example-full-width {
-  width: 100%;
+app-country-select{
+  width: 90%;
+}
+
+app-projection-select{
+
 }

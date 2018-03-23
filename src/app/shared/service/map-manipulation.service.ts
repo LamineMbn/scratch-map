@@ -20,9 +20,9 @@ export class MapManipulationService {
   }
 
   public updateMapWithCountrySelection(amMap: AmChart, list: string[]): AmChart {
-    let map = amMap;
+    const map = amMap;
     _.forEach(list, function (countryCode) {
-      let area = map.getObjectById(countryCode);
+      const area = map.getObjectById(countryCode);
       area.showAsSelected = true;
       map.returnInitialColor(area);
     });

@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import * as _ from 'lodash';
+import {Country} from '../model/ICountry';
 
 @Injectable()
 export class CountriesApiService {
@@ -12,18 +13,18 @@ export class CountriesApiService {
   constructor(readonly _httpClient: HttpClient) {
   }
 
-  public getCountriesByFields(fields: string[]): Observable<any> {
-    let params = new HttpParams()
+  getCountriesByFields(fields: string[]): Observable<Country[]> {
+    const params = new HttpParams()
       .set('fields', _.join(fields, ';'));
 
-    let url = this.BASE_URL + '/all';
+    const url = this.BASE_URL + '/all';
 
-    return this._httpClient.get(url, {params: params});
+    return this._httpClient.get<Country[]>(url, {params: params});
   }
 
-  public retrieveAllCountriesInformation(): Observable<any> {
-    let url = this.BASE_URL + '/all';
-    return this._httpClient.get(url);
+  retrieveAllCountriesInformation(): Observable<Country[]> {
+    const url = this.BASE_URL + '/all';
+    return this._httpClient.get<Country[]>(url);
   }
 
 }

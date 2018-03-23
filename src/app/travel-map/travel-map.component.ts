@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { AmChart, AmChartsService } from '@amcharts/amcharts3-angular';
-import { MapManipulationService } from '../shared/service/map-manipulation.service';
+import {Component, OnInit} from '@angular/core';
+import {AmChart, AmChartsService} from '@amcharts/amcharts3-angular';
+import {MapManipulationService} from '../shared/service/map-manipulation.service';
 
 @Component({
   selector: 'app-travel-map',
@@ -18,7 +18,6 @@ export class TravelMapComponent implements OnInit {
   ngOnInit(): void {
     this.map = this.createMap('mapdiv');
     this.addListeners();
-
   }
 
   updateProjection(projectionSelected) {
@@ -27,6 +26,7 @@ export class TravelMapComponent implements OnInit {
 
   async updateCountrySelection(countrySelected) {
     this.selectedCountries = countrySelected;
+    console.log(this.selectedCountries.length);
   }
 
   private createMap(placeHolder: string): AmChart {
@@ -93,6 +93,7 @@ export class TravelMapComponent implements OnInit {
 
   private updateCountryList(): void {
     this.selectedCountries = this.retrieveSelectedCountries(this.map);
+    console.log(this.selectedCountries.length);
   }
 
   private selectCountries(list: string[]) {
