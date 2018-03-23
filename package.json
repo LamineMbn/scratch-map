@@ -26,8 +26,10 @@
     "@angular/router": "^5.2.9",
     "@types/country-list": "^1.1.0",
     "@types/lodash": "^4.14.105",
+    "angularfire2": "^5.0.0-rc.6",
     "core-js": "^2.4.1",
     "d3": "^4.13.0",
+    "firebase": "^4.12.0",
     "lodash": "^4.17.5",
     "rxjs": "^5.5.6",
     "zone.js": "^0.8.19"

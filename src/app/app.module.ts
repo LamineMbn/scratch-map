@@ -13,6 +13,9 @@ import { CountrySelectComponent } from './country-select/country-select.componen
 import { MapManipulationService } from './shared/service/map-manipulation.service';
 import { ProjectionSelectComponent } from './projection-select/projection-select.component';
 import { WorldProgressionComponent } from './world-progression/world-progression.component';
+import { LoginComponent } from './login/login.component';
+import {AngularFireModule} from 'angularfire2';
+import {environment} from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -20,10 +23,12 @@ import { WorldProgressionComponent } from './world-progression/world-progression
     TravelMapComponent,
     CountrySelectComponent,
     ProjectionSelectComponent,
-    WorldProgressionComponent
+    WorldProgressionComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
+    AngularFireModule.initializeApp(environment.firebase),
     FormsModule,
     HttpClientModule,
     AngularMaterialModule,
