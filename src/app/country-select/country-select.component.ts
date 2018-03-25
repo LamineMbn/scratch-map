@@ -5,7 +5,7 @@ import { CountriesApiService } from '../shared/service/countries-api.service';
 import { AmChart } from '@amcharts/amcharts3-angular';
 import { FormControl } from '@angular/forms';
 import { MapManipulationService } from '../shared/service/map-manipulation.service';
-import {Country} from '../shared/model/ICountry';
+import { Country } from '../shared/model/ICountry';
 
 @Component({
   selector: 'app-country-select',
@@ -37,7 +37,7 @@ export class CountrySelectComponent implements OnInit {
     this.filteredCountries = this.countryCtrl.valueChanges
       .pipe(
         startWith(''),
-        map(state => state ? this.filterCountries(state) : this.countries.slice())
+        map(country => country ? this.filterCountries(country) : this.countries.slice())
       );
   }
 

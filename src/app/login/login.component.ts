@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from '../shared/service/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  user: any;
+
+  constructor(readonly _authenticationService: AuthenticationService) {
+  }
 
   ngOnInit() {
+    this._authenticationService.getAuth(user => this.user = user);
+  }
+
+  signInWithGoogle() {
+    this._authenticationService.login();
   }
 
 }

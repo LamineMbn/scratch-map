@@ -1,5 +1,12 @@
 import { NgModule } from '@angular/core';
-import { MatAutocompleteModule, MatFormFieldModule, MatInputModule, MatProgressBarModule, MatSelectModule } from '@angular/material';
+import {
+  MatAutocompleteModule,
+  MatButtonModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatProgressBarModule,
+  MatSelectModule
+} from '@angular/material';
 
 @NgModule({
   exports: [
@@ -7,7 +14,8 @@ import { MatAutocompleteModule, MatFormFieldModule, MatInputModule, MatProgressB
     MatFormFieldModule,
     MatAutocompleteModule,
     MatProgressBarModule,
-    MatSelectModule
+    MatSelectModule,
+    MatButtonModule
   ],
   declarations: []
 })

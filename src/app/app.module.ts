@@ -14,8 +14,24 @@ import { MapManipulationService } from './shared/service/map-manipulation.servic
 import { ProjectionSelectComponent } from './projection-select/projection-select.component';
 import { WorldProgressionComponent } from './world-progression/world-progression.component';
 import { LoginComponent } from './login/login.component';
-import {AngularFireModule} from 'angularfire2';
-import {environment} from '../environments/environment';
+import { AngularFireModule } from 'angularfire2';
+import { environment } from '../environments/environment';
+import { RouterModule, Routes } from '@angular/router';
+import { LoginGuardService } from './login/login-guard.service';
+import { AuthenticationService } from './shared/service/authentication.service';
+import { AngularFireAuth } from 'angularfire2/auth';
+
+export const ROUTES: Routes = [
+  {path: '', redirectTo: 'travel-map', pathMatch: 'full'},
+  {
+    path: 'travel-map',
+    canActivate: [LoginGuardService],
+    children: [
+      {path: '', component: TravelMapComponent}
+    ]
+  },
+  {path: 'login', component: LoginComponent}
+];
 
 @NgModule({
   declarations: [
@@ -29,6 +45,7 @@ import {environment} from '../environments/environment';
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
+    RouterModule.forRoot(ROUTES, {useHash: true, enableTracing: true}),
     FormsModule,
     HttpClientModule,
     AngularMaterialModule,
@@ -36,7 +53,7 @@ import {environment} from '../environments/environment';
     ReactiveFormsModule,
     AmChartsModule
   ],
-  providers: [CountriesApiService, MapManipulationService],
+  providers: [AngularFireAuth, LoginGuardService, AuthenticationService, CountriesApiService, MapManipulationService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
