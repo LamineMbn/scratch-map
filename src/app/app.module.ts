@@ -21,6 +21,8 @@ import { LoginGuardService } from './login/login-guard.service';
 import { AuthenticationService } from './shared/service/authentication.service';
 import { AngularFireAuth } from 'angularfire2/auth';
 import {AvatarModule} from 'ngx-avatar';
+import {AngularFirestoreModule} from 'angularfire2/firestore';
+import {DatabaseService} from './shared/service/database.service';
 
 export const ROUTES: Routes = [
   {path: '', redirectTo: 'travel-map', pathMatch: 'full'},
@@ -53,9 +55,10 @@ export const ROUTES: Routes = [
     BrowserAnimationsModule,
     ReactiveFormsModule,
     AmChartsModule,
-    AvatarModule
+    AvatarModule,
+    AngularFirestoreModule
   ],
-  providers: [AngularFireAuth, LoginGuardService, AuthenticationService, CountriesApiService, MapManipulationService],
+  providers: [AngularFireAuth, LoginGuardService, AuthenticationService, DatabaseService, CountriesApiService, MapManipulationService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,7 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {AmChart, AmChartsService} from '@amcharts/amcharts3-angular';
 import {MapManipulationService} from '../shared/service/map-manipulation.service';
-import {User} from '../shared/model/user.class';
+import {AuthenticationService} from '../shared/service/authentication.service';
+import {DatabaseService} from '../shared/service/database.service';
+import {Country} from '../shared/model/country.class';
+
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-travel-map',
@@ -9,14 +13,23 @@ import {User} from '../shared/model/user.class';
   styleUrls: ['./travel-map.component.scss']
 })
 export class TravelMapComponent implements OnInit {
-  selectedCountries = new Array<string>('DZ', 'CN');
+  selectedCountries = new Array<string>();
   map: AmChart;
 
   constructor(readonly _amChartsService: AmChartsService,
-              readonly _mapService: MapManipulationService) {
+              readonly _mapService: MapManipulationService,
+              readonly _authenticationService: AuthenticationService,
+              readonly _databaseService: DatabaseService) {
   }
 
   ngOnInit(): void {
+// console.log(this._authenticationService.getCurrentUserUid());
+//     this._authenticationService.getCurrentUserUid()
+//       .then(uid => this._databaseService.get(uid)
+//         .subscribe(countries => _.forEach(countries, function (country: Country) {
+//           this.selectedCountries.push(country.code);
+//         })));
+
     this.map = this.createMap('mapdiv');
     this.addListeners();
   }

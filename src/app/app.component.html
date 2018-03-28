@@ -3,8 +3,8 @@
   <span class="example-spacer"></span>
   <div class="example-icon">
     <button class="avatar-btn" mat-button [matMenuTriggerFor]="menu">
-      <ngx-avatar [name]="_authenticationService.getUser().displayName"
-                  [src]="_authenticationService.getUser().photoURL"
+      <ngx-avatar [name]="_authenticationService.getLoggedUser().displayName"
+                  [src]="_authenticationService.getLoggedUser().photoURL"
                   size="50" [round]="true"></ngx-avatar>
     </button>
     <mat-menu #menu="matMenu" xPosition="after" [overlapTrigger]="false">

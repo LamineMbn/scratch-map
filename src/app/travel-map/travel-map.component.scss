@@ -1,7 +1,7 @@
 section {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-around;
   align-items: center;
   align-content: stretch;
   width: 100%;
@@ -9,5 +9,5 @@ section {
 }
 
 app-country-select{
-  width: 90%;
+  width: 30%;
 }

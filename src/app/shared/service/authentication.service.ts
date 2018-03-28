@@ -1,11 +1,13 @@
-import { Injectable } from '@angular/core';
-import { AngularFireAuth } from 'angularfire2/auth';
+import {Injectable} from '@angular/core';
+import {AngularFireAuth} from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-import { Router } from '@angular/router';
-import { User } from '../model/user.class';
+import {Router} from '@angular/router';
+import {User} from '../model/user.class';
 
 @Injectable()
 export class AuthenticationService {
+
+  authState: any = null;
 
   constructor(readonly _angularFireAuth: AngularFireAuth, readonly router: Router) {
   }
@@ -42,12 +44,12 @@ export class AuthenticationService {
     });
   }
 
-  getUser(): User {
-    return JSON.parse(localStorage.getItem('user'));
+  getLoggedUser(): User {
+    return JSON.parse(localStorage.getItem('user') || '{}') as User;
   }
 
   isLoggedIn(): boolean {
-    return this.getUser() !== null;
+    return this.getLoggedUser() !== null;
   }
 
 }

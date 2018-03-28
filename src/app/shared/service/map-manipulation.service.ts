@@ -10,7 +10,7 @@ export class MapManipulationService {
   }
 
   public retrieveSelectedCountries(map: AmChart): Array<string> {
-    var selected = [];
+    const selected = [];
     _.forEach(map.dataProvider.areas, function (area) {
       if (area.showAsSelected) {
         selected.push(`${area.id} (${area.title})`);
