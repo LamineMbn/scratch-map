@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {AngularFireAuth} from 'angularfire2/auth';
+import { Injectable } from '@angular/core';
+import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-import {Router} from '@angular/router';
-import {User} from '../model/user.class';
+import { Router } from '@angular/router';
+import { User } from '../model/user.class';
 
 @Injectable()
 export class AuthenticationService {
@@ -21,7 +21,7 @@ export class AuthenticationService {
 
     try {
       let result = await this._angularFireAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-
+      this._angularFireAuth.authState.subscribe(auth => this.authState = auth);
       let user = new User(
         result.user.displayName,
         result.user.email,
@@ -44,8 +44,12 @@ export class AuthenticationService {
     });
   }
 
+  getCurrentUserUid() {
+    return this.isLoggedIn() ? this._angularFireAuth.auth.currentUser.uid : null;
+  }
+
   getLoggedUser(): User {
-    return JSON.parse(localStorage.getItem('user') || '{}') as User;
+    return JSON.parse(localStorage.getItem('user')) as User;
   }
 
   isLoggedIn(): boolean {

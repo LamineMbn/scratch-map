@@ -1,11 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {AmChart, AmChartsService} from '@amcharts/amcharts3-angular';
-import {MapManipulationService} from '../shared/service/map-manipulation.service';
-import {AuthenticationService} from '../shared/service/authentication.service';
-import {DatabaseService} from '../shared/service/database.service';
-import {Country} from '../shared/model/country.class';
-
-import * as _ from 'lodash';
+import { Component, OnInit } from '@angular/core';
+import { AmChart, AmChartsService } from '@amcharts/amcharts3-angular';
+import { MapManipulationService } from '../shared/service/map-manipulation.service';
+import { AuthenticationService } from '../shared/service/authentication.service';
+import { DatabaseService } from '../shared/service/database.service';
 
 @Component({
   selector: 'app-travel-map',
@@ -23,12 +20,12 @@ export class TravelMapComponent implements OnInit {
   }
 
   ngOnInit(): void {
-// console.log(this._authenticationService.getCurrentUserUid());
-//     this._authenticationService.getCurrentUserUid()
-//       .then(uid => this._databaseService.get(uid)
-//         .subscribe(countries => _.forEach(countries, function (country: Country) {
-//           this.selectedCountries.push(country.code);
-//         })));
+    // console.log(this._authenticationService.getCurrentUserUid());
+    // this._authenticationService.getCurrentUserUid()
+    //   .then(uid => this._databaseService.get(uid)
+    //     .subscribe(countries => _.forEach(countries, function (country: Country) {
+    //       this.selectedCountries.push(country.code);
+    //     })));
 
     this.map = this.createMap('mapdiv');
     this.addListeners();
