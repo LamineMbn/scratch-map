@@ -20,6 +20,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginGuardService } from './login/login-guard.service';
 import { AuthenticationService } from './shared/service/authentication.service';
 import { AngularFireAuth } from 'angularfire2/auth';
+import {AvatarModule} from 'ngx-avatar';
 
 export const ROUTES: Routes = [
   {path: '', redirectTo: 'travel-map', pathMatch: 'full'},
@@ -51,7 +52,8 @@ export const ROUTES: Routes = [
     AngularMaterialModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    AmChartsModule
+    AmChartsModule,
+    AvatarModule
   ],
   providers: [AngularFireAuth, LoginGuardService, AuthenticationService, CountriesApiService, MapManipulationService],
   bootstrap: [AppComponent]

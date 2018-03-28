@@ -42,9 +42,12 @@ export class AuthenticationService {
     });
   }
 
+  getUser(): User {
+    return JSON.parse(localStorage.getItem('user'));
+  }
 
   isLoggedIn(): boolean {
-    return localStorage.getItem('user') !== null;
+    return this.getUser() !== null;
   }
 
 }

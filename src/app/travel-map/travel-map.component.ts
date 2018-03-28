@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AmChart, AmChartsService} from '@amcharts/amcharts3-angular';
 import {MapManipulationService} from '../shared/service/map-manipulation.service';
+import {User} from '../shared/model/user.class';
 
 @Component({
   selector: 'app-travel-map',

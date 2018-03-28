@@ -1,1 +1,20 @@
+<mat-toolbar color="primary" *ngIf="_authenticationService.isLoggedIn()">
+  <span>Scratch Map</span>
+  <span class="example-spacer"></span>
+  <div class="example-icon">
+    <button class="avatar-btn" mat-button [matMenuTriggerFor]="menu">
+      <ngx-avatar [name]="_authenticationService.getUser().displayName"
+                  [src]="_authenticationService.getUser().photoURL"
+                  size="50" [round]="true"></ngx-avatar>
+    </button>
+    <mat-menu #menu="matMenu" xPosition="after" [overlapTrigger]="false">
+      <button mat-menu-item (click)="_authenticationService.logout()">
+        <mat-icon>account_circle</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </div>
+  <!--<mat-icon class="example-icon">verified_user</mat-icon>-->
+</mat-toolbar>
+
 <router-outlet></router-outlet>

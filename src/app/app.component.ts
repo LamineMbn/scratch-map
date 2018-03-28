@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {AuthenticationService} from './shared/service/authentication.service';
 
 
 @Component({
@@ -8,4 +9,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
+  constructor(readonly _authenticationService: AuthenticationService) {}
 }

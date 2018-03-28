@@ -5,7 +5,11 @@ import {
   MatFormFieldModule,
   MatInputModule,
   MatProgressBarModule,
-  MatSelectModule
+  MatSelectModule,
+  MatToolbarModule,
+  MatIconModule,
+  MatMenuModule,
+  MatCardModule
 } from '@angular/material';
 
 @NgModule({
@@ -15,7 +19,11 @@ import {
     MatAutocompleteModule,
     MatProgressBarModule,
     MatSelectModule,
-    MatButtonModule
+    MatButtonModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatMenuModule,
+    MatCardModule
   ],
   declarations: []
 })
