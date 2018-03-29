@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { Country } from '../model/country.class';
-import { Observable } from 'rxjs/Observable';
+import {Injectable} from '@angular/core';
+import {AngularFirestore, AngularFirestoreDocument} from 'angularfire2/firestore';
+import {Country} from '../model/country.class';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class DatabaseService {
@@ -9,15 +9,17 @@ export class DatabaseService {
   constructor(readonly _angularFirestore: AngularFirestore) {
   }
 
-  // get(uid): Observable<Country[]> {
-  //   const countriesCollection: AngularFirestoreCollection<Country> = this._angularFirestore.collection(`/countries/${uid}`);
-  //   return countriesCollection.valueChanges();
-  // }
-
-  getCountries(): Observable<Country[]> {
-    const countriesCollection: AngularFirestoreCollection<Country> = this._angularFirestore.collection(`/countries`);
+  getCountries(uid): Observable<Country[]> {
+    const countriesCollection: AngularFirestoreDocument<Country[]> = this._angularFirestore.doc(`/countries/${uid}`);
     return countriesCollection.valueChanges();
   }
 
+  addCountry(uid: string, code: string) {
+    const country = new Country(uid, code);
+    console.log(`uid = ${uid}`);
+    const countriesPath = `/countries/${uid}`;
+
+    return this._angularFirestore.doc(countriesPath).set(country);
+  }
 
 }

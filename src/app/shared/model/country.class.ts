@@ -1,4 +1,4 @@
 export class Country {
-  constructor(public code: string) {
+  constructor(public uid: string, public code: string) {
   }
 }
