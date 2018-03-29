@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { map, startWith } from 'rxjs/operators';
-import { CountriesApiService } from '../shared/service/countries-api.service';
-import { AmChart } from '@amcharts/amcharts3-angular';
-import { FormControl } from '@angular/forms';
-import { MapManipulationService } from '../shared/service/map-manipulation.service';
-import { Country } from '../shared/model/ICountry';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import {map, startWith} from 'rxjs/operators';
+import {CountriesApiService} from '../shared/service/countries-api.service';
+import {AmChart} from '@amcharts/amcharts3-angular';
+import {FormControl} from '@angular/forms';
+import {MapManipulationService} from '../shared/service/map-manipulation.service';
+import {Country} from '../shared/model/ICountry';
 
 @Component({
   selector: 'app-country-select',
@@ -17,6 +17,7 @@ export class CountrySelectComponent implements OnInit {
   @Input() map: AmChart;
   @Output() selectedCountries: EventEmitter<string[]>;
 
+  lang: string;
   countryCtrl: FormControl;
   filteredCountries: Observable<any[]>;
   countries = new Array<Country>();
@@ -28,11 +29,14 @@ export class CountrySelectComponent implements OnInit {
 
   ngOnInit() {
 
+    this.lang = navigator.language;
+
     this.countryCtrl = new FormControl();
 
-    this._countriesApiService.getCountriesByFields(['name', 'nativeName', 'alpha2Code', 'flag']).subscribe(countries => {
-      this.countries = countries;
-    });
+    this._countriesApiService.getCountriesByFields(['name', 'translations', 'nativeName', 'alpha2Code', 'flag'])
+      .subscribe(countries => {
+        this.countries = countries;
+      });
 
     this.filteredCountries = this.countryCtrl.valueChanges
       .pipe(
@@ -53,8 +57,10 @@ export class CountrySelectComponent implements OnInit {
 
   filterCountries(name: string) {
     return this.countries.filter(country =>
-      country.name.toLowerCase().indexOf(name.toLowerCase()) === 0);
+      this.retrieveCountryNameByLang(country).toLowerCase().indexOf(name.toLowerCase()) === 0);
   }
 
-
+  retrieveCountryNameByLang(country: Country) {
+    return country.translations[this.lang] || country.name;
+  }
 }

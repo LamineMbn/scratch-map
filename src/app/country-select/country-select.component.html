@@ -4,9 +4,9 @@
     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
       <mat-option (onSelectionChange)="selectCountries([country.alpha2Code])"
                   *ngFor="let country of filteredCountries | async"
-                  [value]="country.name">
+                  [value]="retrieveCountryNameByLang(country)">
         <img style="vertical-align:middle;" aria-hidden src="{{country.flag}}" height="25"/>
-        <span>{{ country.name }}( {{country.alpha2Code}} )</span>
+        <span>{{ retrieveCountryNameByLang(country) }} ( {{country.alpha2Code}} )</span>
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
