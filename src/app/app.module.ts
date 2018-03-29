@@ -25,15 +25,14 @@ import {AngularFirestoreModule} from 'angularfire2/firestore';
 import {DatabaseService} from './shared/service/database.service';
 
 export const ROUTES: Routes = [
-  {path: '', redirectTo: 'travel-map', pathMatch: 'full'},
   {
     path: 'travel-map',
     canActivate: [LoginGuardService],
-    children: [
-      {path: '', component: TravelMapComponent}
-    ]
+    component: TravelMapComponent
   },
-  {path: 'login', component: LoginComponent}
+  {path: 'login', component: LoginComponent},
+  {path: '', redirectTo: 'travel-map', pathMatch: 'full'},
+  {path: '**', redirectTo: 'travel-map', pathMatch: 'full'}
 ];
 
 @NgModule({

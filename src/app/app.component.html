@@ -1,10 +1,10 @@
-<mat-toolbar color="primary" *ngIf="_authenticationService.isLoggedIn()">
+<mat-toolbar color="primary" *ngIf="_authenticationService.user | async as user">
   <span>Scratch Map</span>
   <span class="example-spacer"></span>
   <div class="example-icon">
     <button class="avatar-btn" mat-button [matMenuTriggerFor]="menu">
-      <ngx-avatar [name]="_authenticationService.getLoggedUser().displayName"
-                  [src]="_authenticationService.getLoggedUser().photoURL"
+      <ngx-avatar [name]="user.displayName"
+                  [src]="user.photoURL"
                   size="50" [round]="true"></ngx-avatar>
     </button>
     <mat-menu #menu="matMenu" xPosition="after" [overlapTrigger]="false">
