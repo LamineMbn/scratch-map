@@ -3,7 +3,8 @@ import {AmChart, AmChartsService} from '@amcharts/amcharts3-angular';
 import {MapManipulationService} from '../shared/service/map-manipulation.service';
 import {AuthenticationService} from '../shared/service/authentication.service';
 import {DatabaseService} from '../shared/service/database.service';
-import {Country} from '../shared/model/country.class';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/switchMap';
 
 import * as _ from 'lodash';
 
@@ -13,7 +14,7 @@ import * as _ from 'lodash';
   styleUrls: ['./travel-map.component.scss']
 })
 export class TravelMapComponent implements OnInit {
-  selectedCountries = new Array<string>();
+  selectedCountries = new Array<string>('DZ', 'CN');
   map: AmChart;
 
   constructor(readonly _amChartsService: AmChartsService,
@@ -23,15 +24,19 @@ export class TravelMapComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this._authenticationService.user
-      .subscribe(user => this._databaseService.getCountries(user.uid)
-        .subscribe(countries => _.forEach(countries, function (country: Country) {
-          this.selectedCountries.push(country.code);
-        })));
-
+    // this._authenticationService.user
+    //   .map(user => user.uid)
+    //   .switchMap(uid => this._databaseService.getCountries(uid))
+    //   .map(countries => countries.code)
+    //   .subscribe(countriesCodes => {
+    //
+    //     console.log(countriesCodes);
+    //     this.selectedCountries = countriesCodes;
+    //   });
+    console.log(this.selectedCountries);
     this.map = this.createMap('mapdiv');
     this.addListeners();
+
   }
 
   updateProjection(projectionSelected) {
@@ -108,11 +113,27 @@ export class TravelMapComponent implements OnInit {
   private updateCountryList(): void {
     this.selectedCountries = this.retrieveSelectedCountries(this.map);
     console.log(this.selectedCountries.length);
+    console.log(`here = ${this.selectedCountries}`);
+    // this._authenticationService.user
+    //   .map(user => user.uid)
+    //   .subscribe(uid => {
+    //     console.log(`user = ${uid}`);
+    //     this._databaseService.addCountry(uid, this.selectedCountries);
+    //   });
   }
 
   private selectCountries(list: string[]) {
-    const map = this._mapService.updateMapWithCountrySelection(this.map, list);
-    this.selectedCountries = this.retrieveSelectedCountries(map);
+    this.updateMapWithCountrySelection(list);
+    this.selectedCountries = this.retrieveSelectedCountries(this.map);
+  }
+
+  public updateMapWithCountrySelection(list: string[]) {
+    _.forEach(list, function (countryCode) {
+      console.log(countryCode);
+      const area = this.map.getObjectById(countryCode);
+      area.showAsSelected = true;
+      this.map.returnInitialColor(area);
+    });
   }
 
   private retrieveSelectedCountries(map: AmChart): Array<string> {
